@@ -1,5 +1,7 @@
 package com.qmuiteam.qmuidemo.base;
 
+import android.util.Log;
+
 import com.qmuiteam.qmui.arch.QMUIFragment;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.util.QMUIPackageHelper;
@@ -7,6 +9,10 @@ import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.qmuiteam.qmuidemo.R;
 import com.qmuiteam.qmuidemo.manager.QDPreferenceManager;
+import com.qmuiteam.qmuidemo.model.QDItemDescription;
+
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Created by cgspine on 2018/1/7.
@@ -14,6 +20,10 @@ import com.qmuiteam.qmuidemo.manager.QDPreferenceManager;
 
 public abstract class BaseFragment extends QMUIFragment {
 
+    private static final String TAG = "BaseFragment";
+    protected QDItemDescription mQDItemDescription;
+    private Disposable disposable;
+    private CompositeDisposable compositeDisposable;
 
     public BaseFragment() {
     }
@@ -28,6 +38,13 @@ public abstract class BaseFragment extends QMUIFragment {
         super.onResume();
         checkAndShowUpgradeTip();
 
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.d(TAG,"====BaseFragment====onDetach====");
+        releaseDisposable();
     }
 
     private void checkAndShowUpgradeTip() {
@@ -48,6 +65,20 @@ public abstract class BaseFragment extends QMUIFragment {
                         }
                     })
                     .show();
+        }
+    }
+
+    protected void addDisposable(Disposable disposable){
+        if(compositeDisposable == null){
+            compositeDisposable = new CompositeDisposable();
+        }
+
+        compositeDisposable.add(disposable);
+    }
+
+    private void releaseDisposable(){
+        if(compositeDisposable != null){
+            compositeDisposable.dispose();
         }
     }
 }

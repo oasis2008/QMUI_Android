@@ -2,9 +2,8 @@ package com.qmuiteam.qmuidemo;
 
 import android.os.Bundle;
 
-import com.qmuiteam.qmuidemo.base.BaseFragmentActivity;
-import com.qmuiteam.qmuidemo.R;
 import com.qmuiteam.qmuidemo.base.BaseFragment;
+import com.qmuiteam.qmuidemo.base.BaseFragmentActivity;
 import com.qmuiteam.qmuidemo.fragment.home.HomeFragment;
 
 public class QDMainActivity extends BaseFragmentActivity {
