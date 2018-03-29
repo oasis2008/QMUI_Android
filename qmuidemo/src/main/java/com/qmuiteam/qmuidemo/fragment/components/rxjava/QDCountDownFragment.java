@@ -16,10 +16,7 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
-import io.reactivex.FlowableEmitter;
-import io.reactivex.FlowableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
@@ -102,13 +99,6 @@ public class QDCountDownFragment extends BaseFragment{
                     }
                 }).subscribe()
         );
-
-        Flowable.create(new FlowableOnSubscribe<String>() {
-            @Override
-            public void subscribe(FlowableEmitter<String> e) throws Exception {
-
-            }
-        }, BackpressureStrategy.DROP).
     }
 
 }
