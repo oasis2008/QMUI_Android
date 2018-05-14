@@ -96,7 +96,7 @@ public class QDFlatMapFragment extends BaseFragment{
                 okHttpClient.newCall(request).enqueue(new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
-                        floe.onNext(null);
+                        floe.onNext(new VerifyInfo());
                     }
 
                     @Override
@@ -109,6 +109,7 @@ public class QDFlatMapFragment extends BaseFragment{
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                        verifyInfo.success = true;
                         floe.onNext(verifyInfo);
                     }
                 });
@@ -126,7 +127,7 @@ public class QDFlatMapFragment extends BaseFragment{
                             public void subscribe(final FlowableEmitter<String> emitter) throws Exception {
                                 final String name = "";
 
-                                if(verifyInfo != null) {
+                                if(verifyInfo != null && verifyInfo.success) {
                                     String url = "https://api.weixin.qq.com/sns/userinfo?access_token=" +
                                             verifyInfo.token+
                                             "&openid=" +
@@ -138,7 +139,7 @@ public class QDFlatMapFragment extends BaseFragment{
                                     okHttpClient.newCall(request).enqueue(new Callback() {
                                         @Override
                                         public void onFailure(Call call, IOException e) {
-
+                                            emitter.onNext("");
                                         }
 
                                         @Override
@@ -153,8 +154,9 @@ public class QDFlatMapFragment extends BaseFragment{
                                             emitter.onNext(name);
                                         }
                                     });
+                                }else {
+                                    emitter.onNext("");
                                 }
-
                             }
                         },BackpressureStrategy.ERROR);
                     }
@@ -176,5 +178,6 @@ public class QDFlatMapFragment extends BaseFragment{
         String token;
         String openid;
         String name;
+        boolean success;
     }
 }

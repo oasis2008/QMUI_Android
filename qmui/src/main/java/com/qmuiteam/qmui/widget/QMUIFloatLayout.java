@@ -31,6 +31,8 @@ public class QMUIFloatLayout extends ViewGroup {
     private static final int NUMBER = 1;
     private int mMaxMode = LINES;
     private int mMaximum = Integer.MAX_VALUE;
+    private int mLineCount = 0;
+    private OnLineCountChangeListener mOnLineCountChangeListener;
 
     /**
      * <p>每一行的item数目，下标表示行下标，在onMeasured的时候计算得出，供onLayout去使用。</p>
@@ -209,6 +211,14 @@ public class QMUIFloatLayout extends ViewGroup {
             }
         }
         setMeasuredDimension(resultWidth, resultHeight);
+
+        int meausureLineCount = lineIndex + 1;
+        if (mLineCount != meausureLineCount) {
+            if (mOnLineCountChangeListener != null) {
+                mOnLineCountChangeListener.onChange(mLineCount, meausureLineCount);
+            }
+            mLineCount = meausureLineCount;
+        }
     }
 
     @Override
@@ -420,6 +430,14 @@ public class QMUIFloatLayout extends ViewGroup {
         requestLayout();
     }
 
+    public void setOnLineCountChangeListener(OnLineCountChangeListener onLineCountChangeListener) {
+        mOnLineCountChangeListener = onLineCountChangeListener;
+    }
+
+    public int getLineCount() {
+        return mLineCount;
+    }
+
     /**
      * 获取最多可显示的行数
      *
@@ -443,5 +461,9 @@ public class QMUIFloatLayout extends ViewGroup {
     public void setChildVerticalSpacing(int spacing) {
         mChildVerticalSpacing = spacing;
         invalidate();
+    }
+
+    public interface OnLineCountChangeListener {
+        void onChange(int oldLineCount, int newLineCount);
     }
 }

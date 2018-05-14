@@ -242,10 +242,15 @@ public class QMUIStatusBarHelper {
     }
 
     /**
-     * 更改状态栏图标、文字颜色的方案是否是MIUI自家的， MIUI9之后用回Android原生实现
+     * 更改状态栏图标、文字颜色的方案是否是MIUI自家的， MIUI9 && Android 6 之后用回Android原生实现
      * 见小米开发文档说明：https://dev.mi.com/console/doc/detail?pId=1159
      */
     private static boolean isMIUICustomStatusBarLightModeImpl() {
+
+        if (QMUIDeviceHelper.isMIUIV9() && Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return true;
+        }
+
         return QMUIDeviceHelper.isMIUIV5() || QMUIDeviceHelper.isMIUIV6() ||
                 QMUIDeviceHelper.isMIUIV7() || QMUIDeviceHelper.isMIUIV8();
     }
@@ -390,8 +395,7 @@ public class QMUIStatusBarHelper {
             //状态栏高度大于25dp的平板，状态栏通常在下方
             sStatusbarHeight = 0;
         } else {
-            if (sStatusbarHeight <= 0
-                    || sStatusbarHeight > QMUIDisplayHelper.dp2px(context, STATUS_BAR_DEFAULT_HEIGHT_DP * 2)) {
+            if (sStatusbarHeight <= 0) {
                 //安卓默认状态栏高度为25dp，如果获取的状态高度大于2倍25dp的话，这个数值可能有问题，用回桌面定义的值从新获取。出现这种可能性较低，只有小部分手机出现
                 if (sVirtualDensity == -1) {
                     sStatusbarHeight = QMUIDisplayHelper.dp2px(context, STATUS_BAR_DEFAULT_HEIGHT_DP);
