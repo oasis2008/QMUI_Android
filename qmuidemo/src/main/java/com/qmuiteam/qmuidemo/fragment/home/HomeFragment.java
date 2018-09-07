@@ -29,6 +29,7 @@ public class HomeFragment extends BaseFragment {
     @BindView(R.id.pager) ViewPager mViewPager;
     @BindView(R.id.tabs) QMUITabSegment mTabSegment;
     private HashMap<Pager, HomeController> mPages;
+
     private PagerAdapter mPagerAdapter = new PagerAdapter() {
 
         private int mChildCount = 0;

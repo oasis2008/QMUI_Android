@@ -8,11 +8,12 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.qmuiteam.qmui.widget.QMUITopBar;
-import com.qmuiteam.qmuidemo.decorator.GridDividerItemDecoration;
 import com.qmuiteam.qmuidemo.R;
 import com.qmuiteam.qmuidemo.base.BaseFragment;
 import com.qmuiteam.qmuidemo.base.BaseRecyclerAdapter;
+import com.qmuiteam.qmuidemo.base.OasisPullToRefresh;
 import com.qmuiteam.qmuidemo.base.RecyclerViewHolder;
+import com.qmuiteam.qmuidemo.decorator.GridDividerItemDecoration;
 import com.qmuiteam.qmuidemo.fragment.QDAboutFragment;
 import com.qmuiteam.qmuidemo.model.QDItemDescription;
 
@@ -20,6 +21,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import in.srain.cube.views.ptr.PtrDefaultHandler;
+import in.srain.cube.views.ptr.PtrFrameLayout;
 
 /**
  * @author cginechen
@@ -30,6 +33,7 @@ public abstract class HomeController extends FrameLayout {
 
     @BindView(R.id.topbar) QMUITopBar mTopBar;
     @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
+    @BindView(R.id.pull_to_refresh) OasisPullToRefresh pullToRefresh;
 
     private HomeControlListener mHomeControlListener;
     private ItemAdapter mItemAdapter;
@@ -62,6 +66,18 @@ public abstract class HomeController extends FrameLayout {
             public void onClick(View view) {
                 QDAboutFragment fragment = new QDAboutFragment();
                 startFragment(fragment);
+            }
+        });
+
+        pullToRefresh.setPtrHandler(new PtrDefaultHandler() {
+            @Override
+            public void onRefreshBegin(PtrFrameLayout frame) {
+                postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        pullToRefresh.pullRefreshComplete();
+                    }
+                },5000);
             }
         });
     }

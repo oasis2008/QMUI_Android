@@ -94,8 +94,9 @@ public class QDGroupListViewFragment extends BaseFragment {
         };
 
         QMUIGroupListView.newSection(getContext())
+                .setUseTitleViewForSectionSpace(true)
                 .setTitle("Section 1: 默认提供的样式")
-                .setDescription("Section 1 的描述")
+//                .setDescription("Section 1 的描述")
                 .addItemView(normalItem, onClickListener)
                 .addItemView(itemWithDetail, onClickListener)
                 .addItemView(itemWithDetailBelow, onClickListener)
@@ -104,6 +105,7 @@ public class QDGroupListViewFragment extends BaseFragment {
                 .addTo(mGroupListView);
 
         QMUIGroupListView.newSection(getContext())
+                .setUseTitleViewForSectionSpace(false)
                 .setTitle("Section 2: 自定义右侧 View")
                 .addItemView(itemWithCustom, onClickListener)
                 .addTo(mGroupListView);
